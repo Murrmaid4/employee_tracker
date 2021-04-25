@@ -1,5 +1,6 @@
 const inquirer = require("inquirer");
 const mysql = require("mysql");
+//brings in the node modules ^^
 
 const connection = mysql.createConnection({
   host: "localhost",
@@ -14,12 +15,13 @@ const connection = mysql.createConnection({
   password: "root",
   database: "employer_db",
 });
-
+//connects to mySql database in Dbeaver ^^
 connection.connect(function (err) {
   if (err) throw err;
   console.log("Connection ID", connection.threadId);
   start();
 });
+//when the connection is inacted begin the start function
 
 const start = () => {
   inquirer
@@ -43,9 +45,12 @@ const start = () => {
         "View Department Budgets",
         "Exit",
       ],
+      //this is the initial question that allows users to navigate through the command line
     })
     .then((answer) => {
-      switch (answer.startMenu) {
+        //this switch statement acts as an if/else, allows for certain functions to run when that choice is selected from the start menu
+        switch (answer.startMenu) {
+            //answer.startmenu allows the switch statement to match to the strings in the start menu above
         case "View All Employees":
           viewEmp();
           break;
