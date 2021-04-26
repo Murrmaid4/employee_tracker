@@ -64,6 +64,7 @@ const start = () => {
           break;
 
         case "Add an Employee":
+            addEmp();
           break;
 
         case "Add Department":
@@ -79,9 +80,16 @@ const start = () => {
           break;
         case "Update Employee Manager":
           break;
-        case "Update Employee Role":
+        case "View All Employees by Manager":
           break;
-
+        case "Remove Employee":
+          break;
+          case "Remove Department":
+          break;
+          case "Remove a Role":
+          break;
+          case "View Department Budgets":
+          break;
         case "Exit":
           connection.end();
           console.log("Have a Great Day!");
@@ -99,6 +107,47 @@ function viewEmp() {
     start();
   });
 }
+
+function addEmp() {connection.query("select * from role", function (err, roleData) {
+    const roles = roleData.map((role) => {
+      return {
+        name: role.title,
+        value: role.id,
+      };
+    });
+    inquirer
+      .prompt([
+        {
+          type: "input",
+          message: "What is the First Name of the New Employee?",
+          name: "firstName",
+        },
+        {
+            type: "input",
+            message: "What is the Last Name of the New Employee?",
+            name: "lastName",
+        },
+        {
+          type: "list",
+          message: "Select this employee's role",
+          name: "roleID",
+          choices: roles,
+        },
+      ])
+      .then(function (answer) {
+       
+        connection.query(
+          "Insert Into employee(first_name, last_name, role_id)values(?,?,?)",
+          [answer.firstName, answer.lastName, answer.roleID],
+          function (err, data) {
+            console.log("Employee has been Added.");
+            start();
+          }
+        );
+      });
+  });
+}
+
 
 function viewDepartments() {
   connection.query("Select * from department", function (err, data) {
