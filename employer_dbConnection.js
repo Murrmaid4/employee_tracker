@@ -48,9 +48,9 @@ const start = () => {
       //this is the initial question that allows users to navigate through the command line
     })
     .then((answer) => {
-        //this switch statement acts as an if/else, allows for certain functions to run when that choice is selected from the start menu
-        switch (answer.startMenu) {
-            //answer.startmenu allows the switch statement to match to the strings in the start menu above
+      //this switch statement acts as an if/else, allows for certain functions to run when that choice is selected from the start menu
+      switch (answer.startMenu) {
+        //answer.startmenu allows the switch statement to match to the strings in the start menu above
         case "View All Employees":
           viewEmp();
           break;
@@ -64,7 +64,7 @@ const start = () => {
           break;
 
         case "Add an Employee":
-            addEmp();
+          addEmp();
           break;
 
         case "Add Department":
@@ -81,6 +81,7 @@ const start = () => {
           break;
 
         case "Update Employee Manager":
+          updateMan();
           break;
 
         case "View All Employees by Manager":
@@ -89,15 +90,15 @@ const start = () => {
         case "Remove Employee":
           break;
 
-          case "Remove Department":
+        case "Remove Department":
           break;
 
-          case "Remove a Role":
+        case "Remove a Role":
           break;
 
-          case "View Department Budgets":
+        case "View Department Budgets":
           break;
-          
+
         case "Exit":
           connection.end();
           console.log("Have a Great Day!");
@@ -116,43 +117,58 @@ function viewEmp() {
   });
 }
 
-function addEmp() {connection.query("select * from role", function (err, roleData) {
+function addEmp() {
+  connection.query("select * from role", function (err, roleData) {
     const roles = roleData.map((role) => {
       return {
         name: role.title,
         value: role.id,
       };
     });
-    inquirer
-      .prompt([
-        {
-          type: "input",
-          message: "What is the First Name of the New Employee?",
-          name: "firstName",
-        },
-        {
+    connection.query("select * from manager", function (err, manData) {
+      const manID = manData.map((manager) => {
+        return {
+          name: `${manager.first_name} ${manager.last_name}`,
+          value: manager.id,
+        };
+      });
+      inquirer
+        .prompt([
+          {
+            type: "input",
+            message: "What is the First Name of the New Employee?",
+            name: "firstName",
+          },
+          {
             type: "input",
             message: "What is the Last Name of the New Employee?",
             name: "lastName",
-        },
-        {
-          type: "list",
-          message: "Select this employee's role",
-          name: "roleID",
-          choices: roles,
-        },
-      ])
-      .then(function (answer) {
-       
-        connection.query(
-          "Insert Into employee(first_name, last_name, role_id)values(?,?,?)",
-          [answer.firstName, answer.lastName, answer.roleID],
-          function (err, data) {
-            console.log("Employee has been Added.");
-            start();
-          }
-        );
-      });
+          },
+          {
+            type: "list",
+            message: "Select this employee's role",
+            name: "roleID",
+            choices: roles,
+          },
+          {
+            type: "list",
+            message: "Select this employee's manager",
+            name: "manID",
+            choices: manID,
+          },
+        ])
+        .then(function (answer) {
+
+          connection.query(
+            "Insert Into employee(first_name, last_name, role_id, manager_id)values(?,?,?,?)",
+            [answer.firstName, answer.lastName, answer.roleID, answer.manID],
+            function (err, data) {
+              console.log("Employee has been Added.");
+              start();
+            }
+          );
+        });
+    });
   });
 }
 
@@ -229,6 +245,87 @@ function addRole() {
             start();
           }
         );
+
       });
+  });
+}
+
+function updateRole() {
+  connection.query("select * from employee", function (err, empData) {
+    const empList = empData.map((employee) => {
+      return {
+        name: `${employee.first_name} ${employee.last_name}`,
+        value: employee.id
+      }
+    });
+    connection.query("select * from role", function (err, roleData) {
+      const roles = roleData.map((role) => {
+        return {
+          name: role.title,
+          value: role.id,
+        };
+      });
+
+      inquirer
+        .prompt([
+          {
+            type: "list",
+            message: "Employee whose role you would like to update?",
+            name: "emp",
+            choices: empList
+          },
+          {
+            type: "list",
+            message: "What is the Employee's Updated Role?",
+            name: "role",
+            choices: roles,
+          },
+        ]).then(function (answer) {
+          connection.query("UPDATE employee Set role_id = ? WHERE id = ?", [answer.role, answer.emp], function (err, data) {
+            console.table(data);
+            start();
+          });
+        });
+    });
+  });
+}
+
+function updateMan() {
+  connection.query("select * from employee", function (err, empData) {
+    const empList = empData.map((employee) => {
+      return {
+        name: `${employee.first_name} ${employee.last_name}`,
+        value: employee.id
+      }
+    });
+    connection.query("select * from manager", function (err, manData) {
+      const manID = manData.map((manager) => {
+        return {
+          name: `${manager.first_name} ${manager.last_name}`,
+          value: manager.id,
+        };
+      });
+
+      inquirer
+        .prompt([
+          {
+            type: "list",
+            message: "Employee whose manager you would like to update?",
+            name: "emp",
+            choices: empList
+          },
+          {
+            type: "list",
+            message: "Who is the Employee's new manager?",
+            name: "manager",
+            choices: manID,
+          },
+        ]).then(function (answer) {
+          connection.query("UPDATE employee Set manager_id = ? WHERE id = ?", [answer.manager, answer.emp], function (err, data) {
+            console.table(data);
+            start();
+          });
+        });
+    });
   });
 }
