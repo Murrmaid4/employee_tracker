@@ -77,19 +77,27 @@ const start = () => {
           break;
 
         case "Update Employee Role":
+          updateRole();
           break;
+
         case "Update Employee Manager":
           break;
+
         case "View All Employees by Manager":
           break;
+
         case "Remove Employee":
           break;
+
           case "Remove Department":
           break;
+
           case "Remove a Role":
           break;
+
           case "View Department Budgets":
           break;
+          
         case "Exit":
           connection.end();
           console.log("Have a Great Day!");

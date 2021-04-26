@@ -15,8 +15,9 @@ CREATE TABLE role(
     id INT NOT NULL AUTO_INCREMENT,
     title VARCHAR(30) NOT NULL,
     salary DECIMAL NOT NULL,
-    department_id INT default 0, -- this needs to be fixed look up foriegn key
-    PRIMARY KEY (id)
+    department_id INT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (department_id) REFERENCES department(id)
 );
 -- ^^creates a table called role with 4 columns
 CREATE TABLE employee(
@@ -24,9 +25,18 @@ CREATE TABLE employee(
   id INT NOT NULL AUTO_INCREMENT,
   first_name VARCHAR(30) NOT NULL,
   last_name VARCHAR(30) NOT NULL,
-  role_id INT default 0, --same foreign key here 
-  manager_id INT default 0, -- and here
-  PRIMARY KEY (id)
+  role_id INT,
+  manager_id INT default 0, 
+  PRIMARY KEY (id),
+   FOREIGN KEY (role_id) REFERENCES role(id)
 
 );
 -- creates a table called employee ^^ with 5 columns
+CREATE TABLE manager(
+  id INT NOT NULL AUTO_INCREMENT,
+  first_name VARCHAR(30) NOT NULL,
+  last_name VARCHAR(30) NOT NULL,
+  department_id INT,
+  PRIMARY KEY (id),
+  FOREIGN KEY (department_id) REFERENCES department(id)
+)

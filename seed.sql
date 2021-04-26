@@ -1,9 +1,9 @@
 insert into department(name)
-values ("Sales"),("Engineering"),("Finance"),("Legal");
+values ("Web Development"),("Engineer"),("Finance"),("Legal"),("HR");
 
 insert into role(title, salary, department_id)
-values ("Sales Lead", 100000, 1)
-,("Salesperson",80000, 1)
+values ("Web Developer", 90000, 1)
+,("Junior Developer", 70000, 1)
 ,("Lead Engineer",150000,2)
 ,("Software Engineer",120000,2)
 ,("Accountant",125000,3)
@@ -12,10 +12,13 @@ values ("Sales Lead", 100000, 1)
 
 insert into employee(first_name,last_name,role_id)
 values ("John","Doe",1)
-,("Mike","Chan",2)
-,("Ashley","Rodriguez",3)
-,("Kevin","Tupik",4)
-,("Malia","Brown",5)
-,("Sarah","Lourd",6)
+,("Hannah","Montana",2)
+,("Josie","McCoy",3)
+,("Kevin","Bacon",4)
+,("Jeff","GoldBlum",5)
+,("Billie","Lourd",6)
 ,("Tom","Allen",7)
 ,("Tammer","Galal",4)
+
+insert into manager(first_name,last_name,department_id)
+values ("Bill","Nye",1),("Bob","Vance", 2),("Oprah","Winfrey", 3),("Ally","McBeal",4),("Toby","Flenderson",5);
