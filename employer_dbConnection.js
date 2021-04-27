@@ -97,6 +97,7 @@ const start = () => {
           break;
 
         case "Remove a Role":
+            removeRole();
           break;
 
         case "View Department Budgets":
@@ -353,7 +354,7 @@ function updateMan() {
 //           choices: manID
 //         },
 //       ]).then(function (answer) {
-//         connection.query("SELECT first_name, last_name FROM employee WHERE id = ?", [answer.manager], function (err, data) {
+//         connection.query("SELECT first_name, last_name FROM employee WHERE id = ?", {id: `${answer.manager}`}, function (err, data) {
 //           data.forEach(({ first_name, last_name }) => {
 //             console.table(`${first_name} ${last_name}`);
 //             manSelect();
@@ -443,3 +444,33 @@ function removeDept() {
 
 });
 };
+
+function removeRole() {
+  connection.query("select * from role", function (err, roleData) {
+    const roles = roleData.map((role) => {
+      return {
+        name: role.title,
+        value: role.id,
+      };
+    });
+
+    inquirer
+    .prompt([
+      {
+        type: "list",
+        message: "Role you would like to remove?",
+        name: "role",
+        choices: roles
+      }
+    ]).then(function (answer) {
+      connection.query("DELETE FROM role WHERE ?", {id: `${answer.role}`}, function (err, data) {
+        console.table(data);
+        console.log("Role Deleted!");
+        start();
+      });
+    });
+
+
+  });
+
+}
