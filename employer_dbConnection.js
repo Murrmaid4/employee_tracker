@@ -85,12 +85,15 @@ const start = () => {
           break;
 
         case "View All Employees by Manager":
+          viewAll();
           break;
 
         case "Remove Employee":
+          removeEmp();
           break;
 
         case "Remove Department":
+          removeDept();
           break;
 
         case "Remove a Role":
@@ -251,14 +254,14 @@ function addRole() {
 }
 
 function updateRole() {
-  connection.query("select * from employee", function (err, empData) {
+  connection.query("Select * from employee", function (err, empData) {
     const empList = empData.map((employee) => {
       return {
         name: `${employee.first_name} ${employee.last_name}`,
         value: employee.id
       }
     });
-    connection.query("select * from role", function (err, roleData) {
+    connection.query("Select * from role", function (err, roleData) {
       const roles = roleData.map((role) => {
         return {
           name: role.title,
@@ -329,3 +332,114 @@ function updateMan() {
     });
   });
 }
+
+// function viewAll() {
+//   //in this function we want to be able to view all emp by their manager
+
+//   //meaning first we want to be able to select the manager 
+//   connection.query("select * from manager", function (err, manData) {
+//     const manID = manData.map((manager) => {
+//       return {
+//         name: `${manager.first_name} ${manager.last_name}`,
+//         value: manager.id,
+//       };
+//     });
+//     inquirer
+//       .prompt([
+//         {
+//           type: "list",
+//           message: "Select the Manager whose team you'd like to view",
+//           name: "manager",
+//           choices: manID
+//         },
+//       ]).then(function (answer) {
+//         connection.query("SELECT first_name, last_name FROM employee WHERE id = ?", [answer.manager], function (err, data) {
+//           data.forEach(({ first_name, last_name }) => {
+//             console.table(`${first_name} ${last_name}`);
+//             manSelect();
+//           });
+//         });
+//       });
+//   });
+// }
+
+// const manSelect = () => {
+//   inquirer
+//     .prompt({
+//       name: "manageMenu",
+//       type: "list",
+//       message: "Would you like to view another manager's team?",
+//       choices: ["Yes","No"],})
+//       .then((answer) => {
+
+//       switch (answer) {
+//         case "Yes":
+//           viewAll();
+//           break;
+//         case "No":
+//           start();
+//           break;
+
+//         default:
+//           break;
+//       };
+
+//     });
+// };
+//add would you like to view another managers team function to have start function run again instead of immediately
+
+
+function removeEmp() {
+  connection.query("Select * from employee", function (err, empData) {
+    const empList = empData.map((employee) => {
+      return {
+        name: `${employee.first_name} ${employee.last_name}`,
+        value: employee.id
+      }
+    });
+    inquirer
+    .prompt([
+      {
+        type: "list",
+        message: "Employee you would like to remove?",
+        name: "emp",
+        choices: empList
+      }
+    ]).then(function (answer) {
+      connection.query("DELETE FROM employee WHERE ?", {id: `${answer.emp}`}, function (err, data) {
+        console.table(data);
+        console.log("Employee Deleted!");
+        start();
+      });
+    });
+
+
+  });
+}
+function removeDept() {
+  connection.query("Select * from department", function (err, deptData) {
+    const deptList = deptData.map((department) => {
+      return {
+        name: department.name,
+        value: department.id,
+      };
+    });
+
+    inquirer
+    .prompt([
+      {
+        type: "list",
+        message: "Department you would like to remove?(cannot delete dept until team is assigned other positions)",
+        name: "dept",
+        choices: deptList
+      }
+    ]).then(function (answer) {
+      connection.query("DELETE FROM department WHERE ?", {id: `${answer.dept}`}, function (err, data) {
+        console.table(data);
+        console.log("Department Deleted!");
+        start();
+      });
+    });
+
+});
+};
