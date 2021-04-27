@@ -38,11 +38,10 @@ const start = () => {
         "Add Role",
         "Update Employee Role",
         "Update Employee Manager",
-        "View All Employees by Manager",
         "Remove Employee",
         "Remove Department",
-        "Remove a Role",
-        "View Department Budgets",
+        "Remove a Role", 
+        
         "Exit",
       ],
       //this is the initial question that allows users to navigate through the command line
@@ -84,9 +83,7 @@ const start = () => {
           updateMan();
           break;
 
-        case "View All Employees by Manager":
-          viewAll();
-          break;
+       
 
         case "Remove Employee":
           removeEmp();
@@ -98,9 +95,6 @@ const start = () => {
 
         case "Remove a Role":
             removeRole();
-          break;
-
-        case "View Department Budgets":
           break;
 
         case "Exit":
@@ -334,60 +328,6 @@ function updateMan() {
   });
 }
 
-// function viewAll() {
-//   //in this function we want to be able to view all emp by their manager
-
-//   //meaning first we want to be able to select the manager 
-//   connection.query("select * from manager", function (err, manData) {
-//     const manID = manData.map((manager) => {
-//       return {
-//         name: `${manager.first_name} ${manager.last_name}`,
-//         value: manager.id,
-//       };
-//     });
-//     inquirer
-//       .prompt([
-//         {
-//           type: "list",
-//           message: "Select the Manager whose team you'd like to view",
-//           name: "manager",
-//           choices: manID
-//         },
-//       ]).then(function (answer) {
-//         connection.query("SELECT first_name, last_name FROM employee WHERE id = ?", {id: `${answer.manager}`}, function (err, data) {
-//           data.forEach(({ first_name, last_name }) => {
-//             console.table(`${first_name} ${last_name}`);
-//             manSelect();
-//           });
-//         });
-//       });
-//   });
-// }
-
-// const manSelect = () => {
-//   inquirer
-//     .prompt({
-//       name: "manageMenu",
-//       type: "list",
-//       message: "Would you like to view another manager's team?",
-//       choices: ["Yes","No"],})
-//       .then((answer) => {
-
-//       switch (answer) {
-//         case "Yes":
-//           viewAll();
-//           break;
-//         case "No":
-//           start();
-//           break;
-
-//         default:
-//           break;
-//       };
-
-//     });
-// };
-//add would you like to view another managers team function to have start function run again instead of immediately
 
 
 function removeEmp() {
