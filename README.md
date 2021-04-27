@@ -6,6 +6,9 @@
 
 A command line application that allows the users to track their employees, departments and their roles, as well as allows the user to add, delete and change employees role data.
 
+Video Link of app functionality :https://drive.google.com/file/d/1tOWwOk0BfhyeWjUQBn9a9hDMv_Nm_vP2/view
+
+
 ## Table of Contents 
 
   - [Installation](#installation)
