@@ -52,8 +52,18 @@ The tech used on this project include Github, mySQL, Javascript, Npm Inquirer, a
  Git pull request anytime
 
 ## Images
-will add later
+the start screen
+![screenshot-1](https://user-images.githubusercontent.com/78389456/116316200-948ebe00-a77f-11eb-890c-fc39241d3b68.jpg)
+
+![screenshot-2](https://user-images.githubusercontent.com/78389456/116316201-948ebe00-a77f-11eb-929a-d58792902001.jpg)
  
+
+![screenshot-3](https://user-images.githubusercontent.com/78389456/116316194-92c4fa80-a77f-11eb-868f-eddc532eefcf.jpg)
+
+
+![screenshot-4](https://user-images.githubusercontent.com/78389456/116316199-93f62780-a77f-11eb-89b0-dcc4daf24aee.jpg)
+
+
 ## Tests
  no testing needed (just yet). 
 
